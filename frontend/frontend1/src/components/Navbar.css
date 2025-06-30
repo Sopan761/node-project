@@ -1,0 +1,55 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: #000;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid #222;
+}
+
+/* Company name and logo */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-text {
+  font-size: 22px;
+  font-weight: 800;
+  color: white;
+}
+
+.logo-image {
+  height: 36px;
+  width: auto;
+}
+
+/* Nav links */
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 25px;
+}
+
+.nav-links li {
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.nav-links .active {
+  color: #F9A618;
+}
+
+/* Search box */
+.search-box {
+  padding: 5px 10px;
+  border: 1px solid #333;
+  background-color: transparent;
+  color: white;
+  border-radius: 6px;
+}

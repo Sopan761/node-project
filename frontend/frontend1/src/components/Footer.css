@@ -1,0 +1,147 @@
+.footer-section {
+  background-color: #000;
+  color: #fff;
+  padding: 60px 40px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.footer-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 60px;
+}
+
+.footer-text {
+  max-width: 500px;
+}
+
+.footer-subtitle {
+  font-size: 12px;
+  color: #f9a618;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.footer-text h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.contact-btn {
+  background-color: #f9a618;
+  color: #000;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.footer-image img {
+  max-width: 100%;
+  border-radius: 12px;
+  margin-top: 20px;
+}
+
+.footer-middle {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
+
+.footer-brand {
+  max-width: 500px;
+}
+
+.footer-brand h3 {
+  font-size: 24px;
+  color: #f9a618;
+}
+
+.footer-brand p {
+  color: #aaa;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.footer-links a {
+  color: #ccc;
+  margin-right: 15px;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  color: #f9a618;
+}
+
+.newsletter {
+  max-width: 400px;
+  margin-top: 20px;
+}
+
+.newsletter-heading {
+  font-size: 14px;
+  color: #aaa;
+  margin-bottom: 10px;
+}
+
+.newsletter-input {
+  display: flex;
+  gap: 10px;
+}
+
+.newsletter-input input {
+  padding: 10px;
+  flex: 1;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background-color: #111;
+  color: white;
+}
+
+.newsletter-input button {
+  background-color: #f9a618;
+  border: none;
+  color: #000;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.footer-bottom {
+  border-top: 1px solid #222;
+  margin-top: 60px;
+  padding-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #777;
+}
+
+.footer-policy-links a {
+  color: #777;
+  margin-left: 15px;
+  text-decoration: none;
+}
+
+.footer-policy-links a:hover {
+  color: #f9a618;
+}
+.footer-image {
+  max-height: 260px; /* Adjust based on your footer's height */
+  overflow: hidden;
+  margin-left: 40px;
+}
+
+.footer-image img {
+  height: 100%;
+  width: auto;
+  border-radius: 12px;
+  object-fit: cover;
+}
