@@ -53,13 +53,15 @@ const Navbar = () => (
           </li>
         </ul>
       </li>
+      <li><NavLink to="/Aboutus" style={{ color: "inherit", textDecoration: "none" }}>
+              About Us
+          </NavLink></li>
       <li><NavLink to="/OurProducts" style={{ color: "inherit", textDecoration: "none" }}>
               Products
           </NavLink></li>
       <li><NavLink to="/Contactus" style={{ color: "inherit", textDecoration: "none" }}>
               Contact Us
           </NavLink></li>
-      <li>Blog</li>
     </ul>
     <input className="search-box" placeholder="search.." />
   </nav>

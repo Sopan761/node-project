@@ -14,6 +14,7 @@ import Footer from "./components/Footer";
 import Home from "./components/Home";
 import "./App.css";
 import Admin from "./components/Admin/Admin";
+import AboutUs from "./components/About";
 
 const App = () => {
   const location = useLocation();
@@ -39,6 +40,7 @@ const App = () => {
         <Route path="/OurProducts" element={<OurProducts />} />
         <Route path="/ContactUs" element={<ContactUs />} />
         <Route path="/passwordAdmin" element={<Admin />} />
+        <Route path="aboutus" element={<AboutUs/>}/>
       </Routes>
       {shouldShowFooter && <Footer />}
     </div>
