@@ -1,16 +1,17 @@
 import React from "react";
 import "./Services.css";
-import product1 from "../assets/product1.jpg";
-import product2 from "../assets/product2.jpg";
-import product3 from "../assets/product3.jpg";
+import product1 from "../../assets/product1.jpg";
+import product2 from "../../assets/product2.jpg";
+import product3 from "../../assets/product3.jpg";
 const Services = () => {
   const services = [
-    { id: 1, title: "Sound Design", image: product1 },
-    { id: 2, title: "Podcast Production", image: product2 },
-    { id: 3, title: "Audio Branding", image: product3 },
-    { id: 4, title: "Studio Setup & Acoustics", image: product1 },
-    { id: 5, title: "Voiceover Recording", image: product2 },
-    { id: 6, title: "Live Audio & Visuals", image: product3 },
+    { id: 1, title: "Event Consulting", image: product1 },
+    { id: 2, title: "Event Production", image: product2 },
+    { id: 3, title: "Audiovisual Hire", image: product3 },
+    { id: 4, title: "Production Services", image: product1 },
+    { id: 5, title: "Post Production & Filming", image: product2 },
+    { id: 6, title: "Technical Support", image: product3 },
+    { id: 7, title: "Simultaneous Interpretation", image: product3 },
   ];
 
   return (

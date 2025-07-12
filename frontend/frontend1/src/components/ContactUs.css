@@ -1,0 +1,89 @@
+.contact-us-section {
+  background-color: #000;
+  color: white;
+  padding: 60px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.contact-form-container {
+  background-color: #111;
+  padding: 40px;
+  border-radius: 10px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 0 15px rgba(249, 166, 24, 0.1);
+}
+
+.contact-form-container h2 {
+  font-size: 28px;
+  color: #f9a618;
+  margin-bottom: 10px;
+}
+
+.form-subtext {
+  font-size: 14px;
+  color: #ccc;
+  margin-bottom: 30px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.form-row label {
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #f9a618;
+}
+
+.form-row input,
+.form-row select,
+.form-row textarea {
+  padding: 12px;
+  background-color: #1c1c1c;
+  border: 1px solid #333;
+  color: white;
+  border-radius: 6px;
+  font-size: 14px;
+  resize: none;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.cancel-btn,
+.submit-btn {
+  padding: 12px 24px;
+  border-radius: 6px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background-color: #333;
+  color: #fff;
+}
+
+.submit-btn {
+  background-color: #f9a618;
+  color: #000;
+}
+
+.cancel-btn:hover {
+  background-color: #444;
+}
+
+.submit-btn:hover {
+  background-color: #ffbc2f;
+}
+.contact-us-container{
+  padding:20px 60px 20px ;
+}

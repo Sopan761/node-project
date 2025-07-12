@@ -1,6 +1,6 @@
 import React from "react";
 import "./WhyTrustUs.css";
-import chooseus from "../assets/chooseus.jpg";
+import chooseus from "../../assets/chooseus.jpg";
 const WhyTrustUs = () => {
   return (
     <section className="trust-section">
