@@ -1,0 +1,15 @@
+@font-face {
+  font-family: 'Neutraface';
+  src: url('/fonts/NeutrafaceText-Bold.woff2') format('woff2'),
+       url('/fonts/NeutrafaceText-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Neutraface';
+  src: url('/fonts/NeutrafaceText-Regular.woff2') format('woff2'),
+       url('/fonts/NeutrafaceText-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}

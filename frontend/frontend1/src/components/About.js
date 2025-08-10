@@ -1,10 +1,73 @@
 import React from "react";
+import "./AboutUs.css";
+import aboutImage from "../assets/about-us.jpg";
+import founderImage from "../assets/our-founder.jpg";
 
-const About = () => (
-  <section className="about">
-    <h2>About Poddzy</h2>
-    <p>We are passionate about giving a voice to your ideas. Poddzy helps creators bring their podcast dreams to life from concept to distribution.</p>
-  </section>
-);
+const AboutUs = () => {
+  return (
+    <div className="aboutus-container">
+      <div className="aboutus-top">
+        <img src={aboutImage} alt="About Us" className="aboutus-image" />
+        <div className="aboutus-text">
+          <h1>About Acoustic</h1>
+          <p>
+            Acoustic Visions is a hub of innovation, delivering high-quality audio-visual
+            solutions with unmatched technical excellence and creativity.
+          </p>
+        </div>
+      </div>
 
-export default About;
+      <section className="aboutus-section">
+        <h2>Who We Are</h2>
+        <p>
+          At Acoustic Visions, we blend cutting-edge technology with creative expertise
+          to craft unforgettable audiovisual experiences. Whether it's a concert, corporate
+          event, or private function, we deliver high-impact AV solutions that elevate your event.
+        </p>
+      </section>
+
+      <section className="aboutus-founder">
+        <div className="founder-text">
+          <h2>About Our Founder</h2>
+          <p>
+            Summy V S is a seasoned Sound Engineer and Technical Director with an impressive
+            28 years of experience in sound engineering and technical management for
+            large-scale events across India, the Middle East, and the USA. Having worked with
+            industry leaders like MediaPro India and RECPRO, Summy has honed his skills in
+            setting up and managing sound systems for high-stakes events, from film awards to
+            national games and rock shows.
+          </p>
+          <p>
+            Throughout his career, Summy has been the go-to sound engineer for prestigious
+            awards like the Vanitha Film Awards, where he has served as the official engineer for
+            over 15 years. He has also collaborated with renowned artists, including Hariharan,
+            Shankar Mahadevan, and Susheela Raman, bringing their performances to life with his
+            sound expertise.
+          </p>
+          <p>
+            Summy's international experience spans venues across the US, UK,
+            Australia, and Singapore, where he has managed A/V systems and ensured flawless
+            sound quality.
+          </p>
+          <p>
+            As a former Technical Director at MediaPro AV International and Kappa TV, Summy led
+            technical teams, optimized sound quality, and introduced initiatives to improve
+            operational efficiency. His technical repertoire includes handling LED video walls,
+            projectors, analog and digital mixing systems, and more, making him a versatile asset
+            in the audio-visual industry.
+          </p>
+          <p>
+            With a blend of technical prowess and excellent interpersonal skills, Summy has built
+            long-standing relationships with clients who value his consistency, dedication, and
+            expertise. His commitment to delivering top-notch sound quality has positioned him
+            as a leader in sound engineering, making him an invaluable partner for companies and
+            events worldwide.
+          </p>
+        </div>
+        <img src={founderImage} alt="Founder" className="founder-image" />
+      </section>
+    </div>
+  );
+};
+
+export default AboutUs;
