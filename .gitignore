@@ -40,3 +40,34 @@ coverage/
 .cache/
 *.log
 *.tgz
+
+# Nodemon auto-reload files
+*.swp
+*.swo
+*.tmp
+
+# Nodemon-generated watch files (rare, but safe to add)
+.nodemonignore
+
+# OS-specific metadata
+ehthumbs.db
+Desktop.ini
+
+# MongoDB data directory (if running with --dbpath ./data)
+/data/
+/data/db/
+/dump/
+
+# PM2 or log folders if using
+pm2.log
+logs/
+*.log
+
+# IDEs and editors
+*.sublime-workspace
+*.sublime-project
+*.code-workspace
+
+# NPM lock files (optional, depends on your preference)
+package-lock.json
+yarn.lock
