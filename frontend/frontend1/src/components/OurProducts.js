@@ -1,38 +1,53 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./OurProducts.css";
 import ProductCard from "../components/common/ProductCard";
-import ourProductsBanner from "../assets/ourproducts.jpg"; // Banner image
-
-const categories = [
-  "All",
-  "Lighting",
-  "Sound",
-  "Cameras",
-  "Staging",
-  "Screens",
-];
-
-const dummyProducts = [
-  { id: 1, title: "Stage Lights", category: "Lighting", image: "/assets/product1.jpg" },
-  { id: 2, title: "Wireless Microphone", category: "Sound", image: "/assets/product2.jpg" },
-  { id: 3, title: "HD Camera", category: "Cameras", image: "/assets/product3.jpg" },
-  { id: 4, title: "LED Screen", category: "Screens", image: "/assets/product1.jpg" },
-  { id: 5, title: "PA Speaker", category: "Sound", image: "/assets/product2.jpg" },
-  { id: 6, title: "Truss Structure", category: "Staging", image: "/assets/product3.jpg" },
-];
+import ourProductsBanner from "../assets/ourproducts.jpg";
 
 const OurProducts = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
+  const [categories, setCategories] = useState(["All"]);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const filteredProducts = dummyProducts.filter(product => {
-    const matchesCategory = selectedCategory === "All" || product.category === selectedCategory;
-    const matchesSearch = product.title.toLowerCase().includes(searchTerm.toLowerCase());
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // 1. Fetch categories
+        const categoryRes = await axios.get("http://localhost:5000/api/categories");
+        const categoryList = categoryRes.data.map((cat) => ({
+          id: cat._id,
+          name: cat.name,
+        }));
+        setCategories(["All", ...categoryList.map((c) => c.name)]);
+
+        // 2. Fetch products
+        const productRes = await axios.get("http://localhost:5000/api/products");
+        setProducts(productRes.data);
+      } catch (err) {
+        console.error("Error fetching data:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const filteredProducts = products.filter((product) => {
+    const categoryName = product.categoryId?.name || null;
+    const matchesCategory =
+      selectedCategory === "All" || categoryName === selectedCategory;
+    const matchesSearch = product.title
+      ?.toLowerCase()
+      .includes(searchTerm.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
   return (
     <div className="our-products-section">
+      {/* Banner */}
       <div
         className="our-products-banner"
         style={{ backgroundImage: `url(${ourProductsBanner})` }}
@@ -50,6 +65,7 @@ const OurProducts = () => {
         </div>
       </div>
 
+      {/* Category filter */}
       <div className="category-filters">
         {categories.map((cat, idx) => (
           <button
@@ -62,15 +78,24 @@ const OurProducts = () => {
         ))}
       </div>
 
-      <div className="products-grid">
-        {filteredProducts.length > 0 ? (
-          filteredProducts.map(product => (
-            <ProductCard key={product.id} title={product.title} image={product.image} />
-          ))
-        ) : (
-          <p className="no-results">No products found.</p>
-        )}
-      </div>
+      {/* Products grid */}
+      {loading ? (
+        <p className="loading">Loading products...</p>
+      ) : (
+        <div className="products-grid">
+          {filteredProducts.length > 0 ? (
+            filteredProducts.map((product) => (
+              <ProductCard
+                key={product._id}
+                title={product.title}
+                image={product.imagePath}
+              />
+            ))
+          ) : (
+            <p className="no-results">No products found.</p>
+          )}
+        </div>
+      )}
     </div>
   );
 };

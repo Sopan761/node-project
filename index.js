@@ -1,14 +1,20 @@
-//require('dotenv').config(); // Load .env variables
-
 const dotenv = require('dotenv');
 dotenv.config();
 const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const app = express();
 
+// ✅ Allow your React/Angular frontend to access API
+app.use(cors({
+  origin: 'http://localhost:3000', // Your frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
+
 app.use(express.json());
 
-// Connection MongoDB
+// ✅ MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -16,27 +22,20 @@ mongoose.connect(process.env.MONGO_URI, {
 .then(() => console.log('✅ MongoDB connected'))
 .catch(err => console.error('❌ MongoDB connection error:', err));
 
-// Basic route (optional)
- app.get('/', (req, res) => {
-   res.send('Backend is working!');
- });
+app.get('/', (req, res) => {
+  res.send('Backend is working!');
+});
 
-//Routes
+// ✅ Routes
+app.use('/api/categories', require('./routes/categoryRoutes'));
+app.use('/api/products', require('./routes/productRoutes'));
+app.use('/api/admin', require('./routes/adminRoutes'));
+app.use('/api/contact', require('./routes/contactRoutes'));
 
-//category CRUD
-const categoryRoutes = require('./routes/categoryRoutes');
-app.use('/api/categories', categoryRoutes);
-
-//products  CRUD
-const productRoutes = require('./routes/productRoutes');
-app.use('/api/products', productRoutes);
-
-
-//Adding first user as db is empty 
+// ✅ Create default admin
 app.get('/create-default-admin', async (req, res) => {
   const AdminUser = require('./models/AdminUser');
   const bcrypt = require('bcryptjs');
-
   const hash = await bcrypt.hash('admin123', 10);
   const admin = new AdminUser({
     name: 'Main Admin',
@@ -44,17 +43,8 @@ app.get('/create-default-admin', async (req, res) => {
     passwordHash: hash
   });
   await admin.save();
-
   res.send('Default admin created');
 });
-
-//admin CRUD
-const adminRoutes = require('./routes/adminRoutes');
-app.use('/api/admin', adminRoutes);
-
-//contactRoutes (enquiry)
-const contactRoutes = require('./routes/contactRoutes');
-app.use('/api/contact', contactRoutes);
 
 const PORT = 5000; 
 app.listen(PORT, () => {

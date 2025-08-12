@@ -6,10 +6,19 @@ const Product = require('../models/Product');
 router.post('/', async (req, res) => {
   try {
     const { title, description, categoryId, imagePath } = req.body;
-    const newProduct = new Product({ title, description, categoryId, imagePath });
+
+    let newProduct = new Product({ title, description, categoryId, imagePath });
     await newProduct.save();
+
+    // Populate category name before sending response
+    newProduct = await Product.findById(newProduct._id).populate('categoryId', 'name');
+
     res.status(201).json(newProduct);
   } catch (err) {
+    if (err.name === 'ValidationError') {
+      return res.status(400).json({ error: err.message });
+    }
+    console.error('Error creating product:', err);
     res.status(500).json({ error: 'Error creating product' });
   }
 });
@@ -20,6 +29,7 @@ router.get('/', async (req, res) => {
     const products = await Product.find().populate('categoryId', 'name');
     res.json(products);
   } catch (err) {
+    console.error('Error fetching products:', err);
     res.status(500).json({ error: 'Error fetching products' });
   }
 });
@@ -31,6 +41,7 @@ router.get('/:id', async (req, res) => {
     if (!product) return res.status(404).json({ error: 'Product not found' });
     res.json(product);
   } catch (err) {
+    console.error('Error fetching product:', err);
     res.status(500).json({ error: 'Error fetching product' });
   }
 });
@@ -39,14 +50,24 @@ router.get('/:id', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const { title, description, categoryId, imagePath } = req.body;
-    const updated = await Product.findByIdAndUpdate(
+
+    let updated = await Product.findByIdAndUpdate(
       req.params.id,
       { title, description, categoryId, imagePath },
-      { new: true }
+      { new: true, runValidators: true }
     );
+
     if (!updated) return res.status(404).json({ error: 'Product not found' });
+
+    // Populate category name before sending response
+    updated = await Product.findById(updated._id).populate('categoryId', 'name');
+
     res.json(updated);
   } catch (err) {
+    if (err.name === 'ValidationError') {
+      return res.status(400).json({ error: err.message });
+    }
+    console.error('Error updating product:', err);
     res.status(500).json({ error: 'Error updating product' });
   }
 });
@@ -54,10 +75,11 @@ router.put('/:id', async (req, res) => {
 // DELETE Product
 router.delete('/:id', async (req, res) => {
   try {
-    const deleted = await Product.findByIdAndDelete(req.params.id);
+    const deleted = await Product.findByIdAndDelete(req.params.id).populate('categoryId', 'name');
     if (!deleted) return res.status(404).json({ error: 'Product not found' });
-    res.json({ message: 'Product deleted successfully' });
+    res.json(deleted); // Return deleted product for UI update
   } catch (err) {
+    console.error('Error deleting product:', err);
     res.status(500).json({ error: 'Error deleting product' });
   }
 });

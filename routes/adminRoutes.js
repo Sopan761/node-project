@@ -53,5 +53,25 @@ router.post('/create', async (req, res) => {
   await newAdmin.save();
   res.status(201).json({ message: 'Admin user created' });
 });
+// DELETE admin user
+router.delete('/:id', async (req, res) => {
+  try {
+    const count = await AdminUser.countDocuments();
+    if (count <= 1) {
+      return res.status(400).json({ error: 'At least one admin user must remain' });
+    }
+
+    const deleted = await AdminUser.findByIdAndDelete(req.params.id);
+    if (!deleted) {
+      return res.status(404).json({ error: 'Admin user not found' });
+    }
+
+    res.json({ message: 'Admin user deleted', deleted });
+  } catch (err) {
+    console.error('Error deleting admin:', err);
+    res.status(500).json({ error: 'Error deleting admin user' });
+  }
+});
+
 
 module.exports = router;
