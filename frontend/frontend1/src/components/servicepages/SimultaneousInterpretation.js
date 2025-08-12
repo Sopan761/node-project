@@ -60,13 +60,11 @@ const SimultaneousInterpretation = () => {
   return (
     <section className="event-consulting-section">
       <div className="event-header">
-        <h1>Simultaneous Interpretation</h1>
-        <h4>Bridging the language gap for seamless communication</h4>
+        <h1>COMPLETE AV SOLUTIONS, SEAMLESSLY DELIVERED</h1>
+        <h4>Engineered for Impact. Delivered with Precision.</h4>
         <p className="brand-text">
-          At Acoustic Visions, we offer expert audiovisual consulting to shape unforgettable event experiences.
-          From creative ideation to seamless execution, our team ensures every detail is technically sound and
-          visually stunning. Let us help you connect with your audience through immersive AV solutions.
-        </p>
+          At Acoustic Visions, we specialize in delivering immersive audio-visual solutions that elevate every event experience. From concept development to flawless execution, our turnkey services cover every aspect of AV planning, design, and integration. Whether it’s a live show, corporate event, or hybrid setup, we blend innovative technology with creative insight to create environments that captivate, engage, and connect with your audience on a deeper level.
+</p>
       </div>
 
       {/* Asymmetric Collage Grid */}

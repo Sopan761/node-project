@@ -38,13 +38,11 @@ const AudiovisualHire = () => {
   return (
     <section className="event-consulting-section">
       <div className="event-header">
-        <h1>AUDIO-VISUAL HIRE</h1>
-        <h4>EXTENSIVE, STATE-OF-THE-ART EQUIPMENT INVENTORY</h4>
+        <h1>AUDIO-VISUAL RENTAL</h1>
+        <h4>Cutting-Edge Equipment. Expertly Delivered.</h4>
         <p className="brand-text">
-          At Acoustic Visions, we offer expert audiovisual consulting to shape unforgettable event experiences.
-          From creative ideation to seamless execution, our team ensures every detail is technically sound and
-          visually stunning. Let us help you connect with your audience through immersive AV solutions.
-        </p>
+          At Acoustic Visions, we provide comprehensive audiovisual rentals, backed by expert consulting to craft unforgettable event experiences. From concept to execution, our team ensures every detail is flawlessly integrated—technically precise and visually striking. Engage your audience with immersive AV solutions tailored to elevate any event.
+          </p>
       </div>
 
       {/* Asymmetric Collage Grid */}

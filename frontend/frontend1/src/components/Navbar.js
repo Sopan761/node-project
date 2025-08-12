@@ -13,8 +13,15 @@ const Navbar = () => (
       <li className="active">
         <NavLink to="/" style={{ color: "inherit", textDecoration: "none" }}>Home</NavLink>
       </li>
+      <li><NavLink to="/Aboutus" style={{ color: "inherit", textDecoration: "none" }}>
+         About Us
+      </NavLink></li>
+        <li><NavLink to="/OurProducts" style={{ color: "inherit", textDecoration: "none" }}>
+        Service Catelog
+      </NavLink>
+      </li>
       <li className="dropdown">
-        Services<span className="dropdown-arrow">▼</span>
+        Service Offerings<span className="dropdown-arrow">▼</span>
         <ul className="dropdown-content">
           <li>
             <NavLink to="/services/event-consulting" style={{ color: "inherit", textDecoration: "none" }}>
@@ -23,22 +30,22 @@ const Navbar = () => (
           </li>
           <li>
           <NavLink to="/services/audiovisual-Hire" style={{ color: "inherit", textDecoration: "none" }}>
-              Audiovisual Hire
+              Audio-Visual Rental
             </NavLink>
           </li>
           <li>
           <NavLink to="/services/eventProduction" style={{ color: "inherit", textDecoration: "none" }}>
-              Event Production
+              Event Production Services
             </NavLink>
             </li>
           <li>
             <NavLink to="/services/productionServices" style={{ color: "inherit", textDecoration: "none" }}>
-              Production Services
+              Stage And Sound Engineering
             </NavLink>
           </li>
           <li>
           <NavLink to="/services/postProductionFilming" style={{ color: "inherit", textDecoration: "none" }}>
-              Post Production & Filming
+              Production-Ready AV Services
             </NavLink>
           </li>
           <li>
@@ -48,20 +55,17 @@ const Navbar = () => (
           </li>
           <li>
           <NavLink to="/services/simultaneousInterpretation" style={{ color: "inherit", textDecoration: "none" }}>
-              Simultaneous Interpretation
+              Complete AV Solutions, Seamlessly Delivered
           </NavLink>
           </li>
         </ul>
       </li>
-      <li><NavLink to="/Aboutus" style={{ color: "inherit", textDecoration: "none" }}>
-              About Us
-          </NavLink></li>
-      <li><NavLink to="/OurProducts" style={{ color: "inherit", textDecoration: "none" }}>
-              Products
-          </NavLink></li>
       <li><NavLink to="/Contactus" style={{ color: "inherit", textDecoration: "none" }}>
               Contact Us
           </NavLink></li>
+          {/* <li><NavLink to="/Contactus" style={{ color: "inherit", textDecoration: "none" }}> */}
+              {/* Blog */}
+          {/* </NavLink></li> */}
     </ul>
     <input className="search-box" placeholder="search.." />
   </nav>

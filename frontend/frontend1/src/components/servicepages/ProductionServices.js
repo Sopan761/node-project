@@ -82,12 +82,10 @@ const scrollRight = () => {
   return (
     <section className="event-consulting-section">
       <div className="event-header">
-        <h1>STAGE AND SOUND EQUIPMENT RENTAL</h1>
-        <h4>Bringing your storyboards to life.</h4>
+        <h1>STAGE AND SOUND ENGINEERING</h1>
+        <h4>Turning your vision into a live experience.</h4>
         <p className="brand-text">
-          At Acoustic Visions, we bring your stage to life with innovative design and engineering.
-          From fabrication and rigging to intelligent lighting and ambience, we handle every detail
-          with precision and passion.
+At Acoustic Visions, we transform concepts into captivating stage environments through cutting-edge design and engineering. From custom fabrication and rigging to dynamic lighting and immersive sound, every detail is executed with precision and passion to bring your storyboards to life
         </p>
       </div>
 

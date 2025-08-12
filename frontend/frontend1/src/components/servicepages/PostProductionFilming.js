@@ -71,13 +71,10 @@ const PostProductionFilming = () => {
   return (
     <section className="event-consulting-section">
       <div className="event-header">
-        <h1>AV PRODUCTION SERVICES</h1>
-        <h4>Comprehensive behind the scene capabilities</h4>
+        <h1>PRODUCTION-READY AV SERVICES</h1>
+        <h4>Comprehensive behind-the-scenes expertise.</h4>
         <p className="brand-text">
-          At Acoustic Visions, we offer expert audiovisual consulting to shape unforgettable event experiences.
-          From creative ideation to seamless execution, our team ensures every detail is technically sound and
-          visually stunning. Let us help you connect with your audience through immersive AV solutions.
-        </p>
+          At Acoustic Visions, we provide end-to-end AV production services that power unforgettable events from the ground up. Our team blends technical precision with creative insight—ensuring every element, from concept to execution, is flawlessly delivered. Trust us to create immersive audiovisual experiences that resonate with your audience.</p>
       </div>
 
       {/* Asymmetric Collage Grid */}

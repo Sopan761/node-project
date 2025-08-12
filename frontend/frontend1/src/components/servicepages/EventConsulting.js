@@ -81,12 +81,10 @@ const scrollRight = () => {
     <section className="event-consulting-section">
       <div className="event-header">
         <h1>EVENT CONSULTING</h1>
-        <h4>Bringing unique insights into the needs of today’s events.</h4>
+        <h4>Turning Event Trends into Powerful Experiences</h4>
         <p className="brand-text">
-          At Acoustic Visions, we offer expert audiovisual consulting to shape unforgettable event experiences.
-          From creative ideation to seamless execution, our team ensures every detail is technically sound and
-          visually stunning. Let us help you connect with your audience through immersive AV solutions.
-        </p>
+          At Acoustic Visions, we bring unique insights into the evolving needs of modern events. Our expert audiovisual consulting transforms ideas into unforgettable experiences — from creative concept to flawless execution. With a focus on technical precision and visual impact, we help you engage your audience through immersive, cutting-edge AV solutions.
+          </p>
       </div>
 
       {/* Asymmetric Collage Grid */}

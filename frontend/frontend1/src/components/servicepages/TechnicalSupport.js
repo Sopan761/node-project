@@ -80,12 +80,9 @@ const scrollRight = () => {
     <section className="event-consulting-section">
       <div className="event-header">
         <h1>TECHNICAL SUPPORT</h1>
-        <h4>Dedicated technical support for flawless execution.</h4>
+        <h4>Dedicated experts ensuring flawless execution.</h4>
         <p className="brand-text">
-          At Acoustic Visions, we offer expert audiovisual consulting to shape unforgettable event experiences.
-          From creative ideation to seamless execution, our team ensures every detail is technically sound and
-          visually stunning. Let us help you connect with your audience through immersive AV solutions.
-        </p>
+         At Acoustic Visions, our technical support team works behind the scenes to guarantee seamless event delivery. From setup to showtime, we manage every technical detail with precision and responsiveness—so your event runs smoothly and your message comes through loud and clear.</p>
       </div>
 
       {/* Asymmetric Collage Grid */}
