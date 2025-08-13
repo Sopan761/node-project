@@ -1,9 +1,9 @@
-import React from "react";
-import { useRef, useEffect, useState } from "react";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../../components/HomePage/Services.css";
 import "./EventConsulting.css";
 import ProductCard from "../common/ProductCard";
+import axios from "axios";
 
 import product1 from "../../assets/product1.jpg";
 import product2 from "../../assets/product2.jpg";
@@ -15,25 +15,37 @@ import event3 from "../../assets/event3.jpg";
 import event4 from "../../assets/eventConsulting.jpg";
 
 const AudiovisualHire = () => {
-  const categories = [
-    "Audio reinforcement systems",
-    "Line array sound systems",
-    "Mega projection systems",
-    "Projection video solutions & camera equipment",
-    "Multiple presentation and video switching systems",
-    "Widescreen watchout systems",
-    "Plasmas & PDPs",
-    "Interpretation and conference systems",
-    "IT & office equipment",
-    "Business centre equipment",
-  ];
+  const [categories, setCategories] = useState([]);
+  const navigate = useNavigate();
 
-  // Loop through categories and assign images cyclically
-  const products = categories.map((title, index) => ({
-    id: index + 1,
-    title,
-    image: index % 3 === 0 ? product1 : index % 3 === 1 ? product2 : product3,
-  }));
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/api/categories")
+      .then((res) => {
+        if (Array.isArray(res.data)) {
+          setCategories(res.data);
+        } else if (res.data && res.data.categories) {
+          setCategories(res.data.categories);
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching categories:", err);
+      });
+  }, []);
+
+  const products = categories.map((cat, index) => {
+    const fallbackImage =
+      index % 3 === 0 ? product1 : index % 3 === 1 ? product2 : product3;
+    return {
+      id: cat._id || index + 1,
+      title: cat.name || "Unnamed Category",
+      image: cat.image && cat.image.trim() !== "" ? cat.image : fallbackImage,
+    };
+  });
+
+  const handleCategoryClick = (categoryName) => {
+    navigate(`/OurProducts?category=${encodeURIComponent(categoryName)}`);
+  };
 
   return (
     <section className="event-consulting-section">
@@ -42,7 +54,7 @@ const AudiovisualHire = () => {
         <h4>Cutting-Edge Equipment. Expertly Delivered.</h4>
         <p className="brand-text">
           At Acoustic Visions, we provide comprehensive audiovisual rentals, backed by expert consulting to craft unforgettable event experiences. From concept to execution, our team ensures every detail is flawlessly integrated—technically precise and visually striking. Engage your audience with immersive AV solutions tailored to elevate any event.
-          </p>
+        </p>
       </div>
 
       {/* Asymmetric Collage Grid */}
@@ -52,18 +64,22 @@ const AudiovisualHire = () => {
         <img src={event3} alt="event3" />
         <img src={event4} alt="event4" />
       </div>
+
       <div className="expertise-icon-carousel-section">
         <h3>EQUIPMENT AVAILABLE FOR HIRE</h3>
-        </div>
-      {/* Product Cards Section for AV Hire Categories */}
+      </div>
+
+      {/* Product Cards Section */}
       <div className="products-section">
         <div className="services-grid">
           {products.map((product) => (
-            <ProductCard
+            <div
               key={product.id}
-              image={product.image}
-              title={product.title}
-            />
+              onClick={() => handleCategoryClick(product.title)}
+              style={{ cursor: "pointer" }}
+            >
+              <ProductCard image={product.image} title={product.title} />
+            </div>
           ))}
         </div>
       </div>

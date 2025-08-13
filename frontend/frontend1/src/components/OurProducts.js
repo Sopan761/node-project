@@ -1,20 +1,32 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 import "./OurProducts.css";
 import ProductCard from "../components/common/ProductCard";
 import ourProductsBanner from "../assets/ourproducts.jpg";
 
 const OurProducts = () => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const categoryFromQuery = queryParams.get("category");
+
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [categories, setCategories] = useState(["All"]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Sync category from query param immediately
+  useEffect(() => {
+    if (categoryFromQuery) {
+      setSelectedCategory(categoryFromQuery);
+    }
+  }, [categoryFromQuery]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // 1. Fetch categories
+        // Fetch categories
         const categoryRes = await axios.get("http://localhost:5000/api/categories");
         const categoryList = categoryRes.data.map((cat) => ({
           id: cat._id,
@@ -22,7 +34,7 @@ const OurProducts = () => {
         }));
         setCategories(["All", ...categoryList.map((c) => c.name)]);
 
-        // 2. Fetch products
+        // Fetch products
         const productRes = await axios.get("http://localhost:5000/api/products");
         setProducts(productRes.data);
       } catch (err) {
@@ -53,7 +65,7 @@ const OurProducts = () => {
         style={{ backgroundImage: `url(${ourProductsBanner})` }}
       >
         <div className="banner-overlay">
-          <h1>Our Products</h1>
+          <h1>SERVICE CATALOG</h1>
           <p>Explore our professional-grade AV equipment for any event need.</p>
           <input
             type="text"
