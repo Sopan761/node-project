@@ -34,7 +34,7 @@ const OurProducts = () => {
         }));
         setCategories(["All", ...categoryList.map((c) => c.name)]);
 
-        // Fetch products
+        // Fetch products (backend should return imagePath as Base64 string if available)
         const productRes = await axios.get("http://localhost:5000/api/products");
         setProducts(productRes.data);
       } catch (err) {
@@ -100,7 +100,7 @@ const OurProducts = () => {
               <ProductCard
                 key={product._id}
                 title={product.title}
-                image={product.imagePath}
+                image={product.imagePath} // This is now Base64 string from backend
               />
             ))
           ) : (

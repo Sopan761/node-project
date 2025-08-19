@@ -8,7 +8,10 @@ const productSchema = new mongoose.Schema({
     ref: 'Category',
     required: true,
   },
-  imagePath: { type: String }, // optional
+  image: {
+    data: Buffer,       // store binary data
+    contentType: String // store MIME type like 'image/png'
+  },
   createdAt: { type: Date, default: Date.now },
 });
 

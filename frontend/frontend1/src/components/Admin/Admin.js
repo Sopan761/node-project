@@ -16,9 +16,9 @@ const Admin = () => {
   const [products, setProducts] = useState([]);
 
   const [formData, setFormData] = useState({});
+  const [imageFile, setImageFile] = useState(null); // NEW: store selected image file
   const [editId, setEditId] = useState(null);
 
-  // Load data for current view
   useEffect(() => {
     if (!loggedIn) return;
     const loadData = async () => {
@@ -44,7 +44,6 @@ const Admin = () => {
     loadData();
   }, [view, loggedIn]);
 
-  // Login check (for now: still local)
   const handleLogin = (e) => {
     e.preventDefault();
     if (credentials.username === "admin" && credentials.password === "admin123") {
@@ -67,6 +66,7 @@ const Admin = () => {
 
   const resetForm = () => {
     setFormData({});
+    setImageFile(null); // reset file
     setEditId(null);
   };
 
@@ -78,11 +78,26 @@ const Admin = () => {
         url += `/${editId}`;
         method = "PUT";
       }
-      const res = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+
+      let body;
+      let headers = {};
+
+      if (type === "products") {
+        // Use FormData for products so we can send an image file
+        body = new FormData();
+        Object.keys(formData).forEach((key) => {
+          body.append(key, formData[key]);
+        });
+        if (imageFile) {
+          body.append("image", imageFile);
+        }
+      } else {
+        // Normal JSON for users & categories
+        headers["Content-Type"] = "application/json";
+        body = JSON.stringify(formData);
+      }
+
+      const res = await fetch(url, { method, headers, body });
       const saved = await res.json();
 
       if (res.ok) {
@@ -104,6 +119,7 @@ const Admin = () => {
 
   const handleEdit = (item) => {
     setFormData(item);
+    setImageFile(null);
     setEditId(item._id);
   };
 
@@ -187,6 +203,12 @@ const Admin = () => {
                   </option>
                 ))}
               </select>
+              {/* NEW: Image upload */}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setImageFile(e.target.files[0])}
+              />
             </>
           )}
 

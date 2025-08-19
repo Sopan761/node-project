@@ -1,86 +1,98 @@
 const express = require('express');
-const router = express.Router();
+const multer = require('multer');
 const Product = require('../models/Product');
 
-// CREATE Product
-router.post('/', async (req, res) => {
+const router = express.Router();
+
+// Multer setup (store in memory instead of disk)
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
+// CREATE Product with image in MongoDB
+router.post('/', upload.single('image'), async (req, res) => {
   try {
-    const { title, description, categoryId, imagePath } = req.body;
+    // multer parses both the file and text fields from multipart/form-data
+    const { title, description, categoryId } = req.body;
 
-    let newProduct = new Product({ title, description, categoryId, imagePath });
+    if (!title || !description || !categoryId) {
+      return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    let newProduct = new Product({
+      title,
+      description,
+      categoryId,
+      image: req.file
+        ? {
+            data: req.file.buffer,
+            contentType: req.file.mimetype
+          }
+        : undefined
+    });
+
     await newProduct.save();
-
-    // Populate category name before sending response
     newProduct = await Product.findById(newProduct._id).populate('categoryId', 'name');
 
-    res.status(201).json(newProduct);
+    res.status(201).json({
+      ...newProduct._doc,
+      image: newProduct.image?.data
+        ? `data:${newProduct.image.contentType};base64,${newProduct.image.data.toString('base64')}`
+        : null
+    });
   } catch (err) {
-    if (err.name === 'ValidationError') {
-      return res.status(400).json({ error: err.message });
-    }
     console.error('Error creating product:', err);
     res.status(500).json({ error: 'Error creating product' });
   }
 });
 
-// GET All Products
+// GET All Products (send Base64 image string)
 router.get('/', async (req, res) => {
   try {
     const products = await Product.find().populate('categoryId', 'name');
-    res.json(products);
+
+    const formattedProducts = products.map(p => ({
+      ...p._doc,
+      image: p.image?.data
+        ? `data:${p.image.contentType};base64,${p.image.data.toString('base64')}`
+        : null
+    }));
+
+    res.json(formattedProducts);
   } catch (err) {
     console.error('Error fetching products:', err);
     res.status(500).json({ error: 'Error fetching products' });
   }
 });
 
-// GET Single Product by ID
-router.get('/:id', async (req, res) => {
+// UPDATE Product (with optional image change)
+router.put('/:id', upload.single('image'), async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id).populate('categoryId', 'name');
-    if (!product) return res.status(404).json({ error: 'Product not found' });
-    res.json(product);
-  } catch (err) {
-    console.error('Error fetching product:', err);
-    res.status(500).json({ error: 'Error fetching product' });
-  }
-});
+    const { title, description, categoryId } = req.body;
+    const updateData = { title, description, categoryId };
 
-// UPDATE Product
-router.put('/:id', async (req, res) => {
-  try {
-    const { title, description, categoryId, imagePath } = req.body;
-
-    let updated = await Product.findByIdAndUpdate(
-      req.params.id,
-      { title, description, categoryId, imagePath },
-      { new: true, runValidators: true }
-    );
-
-    if (!updated) return res.status(404).json({ error: 'Product not found' });
-
-    // Populate category name before sending response
-    updated = await Product.findById(updated._id).populate('categoryId', 'name');
-
-    res.json(updated);
-  } catch (err) {
-    if (err.name === 'ValidationError') {
-      return res.status(400).json({ error: err.message });
+    if (req.file) {
+      updateData.image = {
+        data: req.file.buffer,
+        contentType: req.file.mimetype
+      };
     }
+
+    let updatedProduct = await Product.findByIdAndUpdate(req.params.id, updateData, { new: true })
+      .populate('categoryId', 'name');
+
+    if (!updatedProduct) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    res.json({
+      ...updatedProduct._doc,
+      image: updatedProduct.image?.data
+        ? `data:${updatedProduct.image.contentType};base64,${updatedProduct.image.data.toString('base64')}`
+        : null
+    });
+  } catch (err) {
     console.error('Error updating product:', err);
     res.status(500).json({ error: 'Error updating product' });
-  }
-});
-
-// DELETE Product
-router.delete('/:id', async (req, res) => {
-  try {
-    const deleted = await Product.findByIdAndDelete(req.params.id).populate('categoryId', 'name');
-    if (!deleted) return res.status(404).json({ error: 'Product not found' });
-    res.json(deleted); // Return deleted product for UI update
-  } catch (err) {
-    console.error('Error deleting product:', err);
-    res.status(500).json({ error: 'Error deleting product' });
   }
 });
 
