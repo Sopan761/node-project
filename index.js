@@ -3,12 +3,14 @@ dotenv.config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const path = require('path');   // ✅ import path
+
 const app = express();
 
-// ✅ Allow your React/Angular frontend to access API
+// ✅ CORS setup
 app.use(cors({
-  origin: 'http://localhost:3000', // Your frontend URL
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  origin: process.env.CLIENT_URL || "http://localhost:3000", 
+  methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
 
@@ -22,6 +24,7 @@ mongoose.connect(process.env.MONGO_URI, {
 .then(() => console.log('✅ MongoDB connected'))
 .catch(err => console.error('❌ MongoDB connection error:', err));
 
+// ✅ Test route
 app.get('/', (req, res) => {
   res.send('Backend is working!');
 });
@@ -32,21 +35,34 @@ app.use('/api/products', require('./routes/productRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
 app.use('/api/contact', require('./routes/contactRoutes'));
 
-// ✅ Create default admin
+// ✅ Create default admin (only for testing/demo)
 app.get('/create-default-admin', async (req, res) => {
   const AdminUser = require('./models/AdminUser');
   const bcrypt = require('bcryptjs');
   const hash = await bcrypt.hash('admin123', 10);
+
   const admin = new AdminUser({
     name: 'Main Admin',
     email: 'admin@example.com',
     passwordHash: hash
   });
+
   await admin.save();
   res.send('Default admin created');
 });
 
-const PORT = 5000; 
+// ✅ Serve React build in production
+if (process.env.NODE_ENV === "production") {
+  const frontendPath = path.join(__dirname, "frontend/frontend1/client/build");
+  app.use(express.static(frontendPath));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(frontendPath, "index.html"));
+  });
+}
+
+// ✅ Use Render's PORT
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
