@@ -53,7 +53,7 @@ app.get('/create-default-admin', async (req, res) => {
 
 // ✅ Serve React build in production
 if (process.env.NODE_ENV === "production") {
-  const frontendPath = path.join(__dirname, "frontend/frontend1/client/build");
+  const frontendPath = path.join(__dirname, "frontend/frontend1/build");
   app.use(express.static(frontendPath));
 
   app.get("*", (req, res) => {
