@@ -16,32 +16,87 @@ const Admin = () => {
   const [products, setProducts] = useState([]);
 
   const [formData, setFormData] = useState({});
-  const [imageFile, setImageFile] = useState(null); // NEW: store selected image file
+  const [imageFile, setImageFile] = useState(null);
   const [editId, setEditId] = useState(null);
 
-  useEffect(() => {
-    if (!loggedIn) return;
-    const loadData = async () => {
-      try {
-        let res, data;
-        if (view === "users") {
-          res = await fetch(`${API_BASE}/admin`);
-          data = await res.json();
-          setUsers(data);
-        } else if (view === "categories") {
-          res = await fetch(`${API_BASE}/categories`);
-          data = await res.json();
-          setCategories(data);
-        } else if (view === "products") {
-          res = await fetch(`${API_BASE}/products`);
-          data = await res.json();
-          setProducts(data);
-        }
-      } catch (err) {
-        console.error(err);
+  // ✅ Utility: compress + resize image before upload
+  const resizeImage = (file, maxWidth = 600, maxHeight = 400, quality = 0.7) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      reader.onload = (event) => {
+        const img = new Image();
+        img.src = event.target.result;
+
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          let width = img.width;
+          let height = img.height;
+
+          // keep ratio
+          if (width > height) {
+            if (width > maxWidth) {
+              height = Math.round((height *= maxWidth / width));
+              width = maxWidth;
+            }
+          } else {
+            if (height > maxHeight) {
+              width = Math.round((width *= maxHeight / height));
+              height = maxHeight;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, width, height);
+
+          canvas.toBlob(
+            (blob) => {
+              resolve(new File([blob], file.name, { type: "image/jpeg" }));
+            },
+            "image/jpeg",
+            quality
+          );
+        };
+
+        img.onerror = (err) => reject(err);
+      };
+    });
+  };
+
+  const loadData = async (section) => {
+    try {
+      let res, data;
+      if (section === "users") {
+        res = await fetch(`${API_BASE}/admin`);
+        data = await res.json();
+        setUsers(data);
+      } else if (section === "categories") {
+        res = await fetch(`${API_BASE}/categories`);
+        data = await res.json();
+        setCategories(data);
+      } else if (section === "products") {
+        const [catRes, prodRes] = await Promise.all([
+          fetch(`${API_BASE}/categories`),
+          fetch(`${API_BASE}/products`),
+        ]);
+        const [catData, prodData] = await Promise.all([
+          catRes.json(),
+          prodRes.json(),
+        ]);
+        setCategories(catData);
+        setProducts(prodData);
       }
-    };
-    loadData();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    if (loggedIn) loadData(view);
   }, [view, loggedIn]);
 
   const handleLogin = (e) => {
@@ -66,7 +121,7 @@ const Admin = () => {
 
   const resetForm = () => {
     setFormData({});
-    setImageFile(null); // reset file
+    setImageFile(null);
     setEditId(null);
   };
 
@@ -80,34 +135,23 @@ const Admin = () => {
       }
 
       let body;
-      let headers = {};
+      let options = { method };
 
-      if (type === "products") {
-        // Use FormData for products so we can send an image file
+      if (type === "products" || type === "categories") {
         body = new FormData();
-        Object.keys(formData).forEach((key) => {
-          body.append(key, formData[key]);
-        });
-        if (imageFile) {
-          body.append("image", imageFile);
-        }
+        Object.keys(formData).forEach((key) => body.append(key, formData[key]));
+        if (imageFile) body.append("image", imageFile);
+        options.body = body;
       } else {
-        // Normal JSON for users & categories
-        headers["Content-Type"] = "application/json";
-        body = JSON.stringify(formData);
+        options.headers = { "Content-Type": "application/json" };
+        options.body = JSON.stringify(formData);
       }
 
-      const res = await fetch(url, { method, headers, body });
+      const res = await fetch(url, options);
       const saved = await res.json();
 
       if (res.ok) {
-        if (type === "admin") {
-          setUsers(editId ? users.map((u) => (u._id === saved._id ? saved : u)) : [...users, saved]);
-        } else if (type === "categories") {
-          setCategories(editId ? categories.map((c) => (c._id === saved._id ? saved : c)) : [...categories, saved]);
-        } else if (type === "products") {
-          setProducts(editId ? products.map((p) => (p._id === saved._id ? saved : p)) : [...products, saved]);
-        }
+        await loadData(type);
         resetForm();
       } else {
         alert(saved.error || "Error saving");
@@ -129,13 +173,7 @@ const Admin = () => {
       const res = await fetch(`${API_BASE}/${type}/${id}`, { method: "DELETE" });
       const result = await res.json();
       if (res.ok) {
-        if (type === "admin") {
-          setUsers(users.filter((u) => u._id !== id));
-        } else if (type === "categories") {
-          setCategories(categories.filter((c) => c._id !== id));
-        } else if (type === "products") {
-          setProducts(products.filter((p) => p._id !== id));
-        }
+        await loadData(type);
       } else {
         alert(result.error || "Error deleting");
       }
@@ -176,20 +214,66 @@ const Admin = () => {
         >
           {view === "users" && (
             <>
-              <input name="name" placeholder="Name" value={formData.name || ""} onChange={handleFormChange} required />
-              <input name="email" placeholder="Email" value={formData.email || ""} onChange={handleFormChange} required />
-              <input type="password" name="password" placeholder="Password" onChange={handleFormChange} />
+              <input
+                name="name"
+                placeholder="Name"
+                value={formData.name || ""}
+                onChange={handleFormChange}
+                required
+              />
+              <input
+                name="email"
+                placeholder="Email"
+                value={formData.email || ""}
+                onChange={handleFormChange}
+                required
+              />
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                onChange={handleFormChange}
+              />
             </>
           )}
 
           {view === "categories" && (
-            <input name="name" placeholder="Category Name" value={formData.name || ""} onChange={handleFormChange} required />
+            <>
+              <input
+                name="name"
+                placeholder="Category Name"
+                value={formData.name || ""}
+                onChange={handleFormChange}
+                required
+              />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={async (e) => {
+                  if (e.target.files[0]) {
+                    const compressed = await resizeImage(e.target.files[0]);
+                    setImageFile(compressed);
+                  }
+                }}
+              />
+            </>
           )}
 
           {view === "products" && (
             <>
-              <input name="title" placeholder="Product Name" value={formData.title || ""} onChange={handleFormChange} required />
-              <textarea name="description" placeholder="Description" value={formData.description || ""} onChange={handleFormChange} />
+              <input
+                name="title"
+                placeholder="Product Name"
+                value={formData.title || ""}
+                onChange={handleFormChange}
+                required
+              />
+              <textarea
+                name="description"
+                placeholder="Description"
+                value={formData.description || ""}
+                onChange={handleFormChange}
+              />
               <select
                 name="categoryId"
                 value={formData.categoryId || ""}
@@ -203,11 +287,15 @@ const Admin = () => {
                   </option>
                 ))}
               </select>
-              {/* NEW: Image upload */}
               <input
                 type="file"
                 accept="image/*"
-                onChange={(e) => setImageFile(e.target.files[0])}
+                onChange={async (e) => {
+                  if (e.target.files[0]) {
+                    const compressed = await resizeImage(e.target.files[0]);
+                    setImageFile(compressed);
+                  }
+                }}
               />
             </>
           )}
@@ -225,12 +313,27 @@ const Admin = () => {
             <li key={item._id}>
               <span>
                 {view === "products"
-                  ? `${item.title} (${item.category?.name || "No Category"})`
+                  ? `${item.title} (${item.categoryId?.name || "No Category"})`
                   : item.name + (item.email ? ` (${item.email})` : "")}
               </span>
+              {item.image && (
+                <img
+                  src={item.image}
+                  alt={item.name || item.title}
+                  style={{
+                    width: "60px",
+                    height: "60px",
+                    objectFit: "cover",
+                    marginLeft: "10px",
+                    borderRadius: "6px",
+                  }}
+                />
+              )}
               <div className="actions">
                 <button onClick={() => handleEdit(item)}>Edit</button>
-                <button onClick={() => handleDelete(item._id, type)}>Delete</button>
+                <button onClick={() => handleDelete(item._id, type)}>
+                  Delete
+                </button>
               </div>
             </li>
           ))}
@@ -247,14 +350,18 @@ const Admin = () => {
           <input
             name="username"
             placeholder="Username"
-            onChange={(e) => setCredentials((p) => ({ ...p, username: e.target.value }))}
+            onChange={(e) =>
+              setCredentials((p) => ({ ...p, username: e.target.value }))
+            }
             required
           />
           <input
             type="password"
             name="password"
             placeholder="Password"
-            onChange={(e) => setCredentials((p) => ({ ...p, password: e.target.value }))}
+            onChange={(e) =>
+              setCredentials((p) => ({ ...p, password: e.target.value }))
+            }
             required
           />
           <button type="submit">Login</button>
@@ -270,7 +377,9 @@ const Admin = () => {
         <button onClick={() => setView("users")}>Users</button>
         <button onClick={() => setView("products")}>Products</button>
         <button onClick={() => setView("categories")}>Categories</button>
-        <button className="logout-btn" onClick={handleLogout}>Logout</button>
+        <button className="logout-btn" onClick={handleLogout}>
+          Logout
+        </button>
       </aside>
       <main className="admin-main">{renderSection()}</main>
     </div>
