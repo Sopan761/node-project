@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
-import Select from "react-select"; // ✅ new
+import Select from "react-select";
+import emailjs from "emailjs-com"; // ✅ EmailJS import
 import "./ContactUs.css";
 import FooterMiddle from "./FooterMiddle";
 
@@ -48,7 +49,6 @@ const ContactUs = () => {
     return products.filter((p) => selected.has(p.categoryId?._id));
   }, [products, formData.categories]);
 
-  // Format options for react-select
   const categoryOptions = categories.map((c) => ({
     value: c._id,
     label: c.name,
@@ -85,7 +85,6 @@ const ContactUs = () => {
 
   const handleProductsChange = (selected) => {
     if (selected?.some((s) => s.value === "__ALL__")) {
-      // replace with all
       const all = filteredProducts.map((p) => ({
         value: p._id,
         label: `${p.title} (${p.categoryId?.name || ""})`,
@@ -101,13 +100,39 @@ const ContactUs = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // ✅ Submit Form + Send Email via EmailJS
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form submitted:", {
-      ...formData,
-      categories: formData.categories.map((c) => c.value),
-      products: formData.products.map((p) => p.value),
-    });
+
+    const templateParams = {
+      from_name: formData.name,
+      from_email: formData.email,
+      mobile: formData.mobile,
+      categories: formData.categories.map((c) => c.label).join(", "),
+      products: formData.products.map((p) => p.label).join(", "),
+      description: formData.description,
+      additional: formData.additional,
+      //to_email: "visionsacoustic@gmail.com",
+    };
+console.log("Sending params:", templateParams);
+    emailjs
+      .send(
+        "service_jf8c7e6", // ✅ Your Service ID
+        "template_qdpxpg8", // ✅ Your Template ID
+        templateParams,
+        "s2TJO3AEO9RPjzahf" // ✅ Your Public API Key
+      )
+      .then(
+        (response) => {
+          alert("✅ Message sent successfully!");
+          console.log("SUCCESS!", response.status, response.text);
+          handleCancel();
+        },
+        (err) => {
+          alert("❌ Failed to send message, please try again.");
+          console.error("FAILED...", err);
+        }
+      );
   };
 
   const handleCancel = () => {
