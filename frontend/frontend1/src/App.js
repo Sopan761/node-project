@@ -15,6 +15,7 @@ import Home from "./components/Home";
 import "./App.css";
 import Admin from "./components/Admin/Admin";
 import AboutUs from "./components/About";
+import FloatingContactWidget from "./components/common/FloatingContactWidget";
 
 const App = () => {
   const location = useLocation();
@@ -43,6 +44,7 @@ const App = () => {
         <Route path="aboutus" element={<AboutUs/>}/>
       </Routes>
       {shouldShowFooter && <Footer />}
+       <FloatingContactWidget />
     </div>
   );
 };

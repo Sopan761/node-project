@@ -1,0 +1,45 @@
+.floating-widget {
+  position: fixed;
+  top: 50%;
+  right: 25px;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  z-index: 2000;
+}
+
+/* Common button style */
+.floating-btn {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border: 1px solid #222;
+  background-color: #121212;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+/* Hover effect */
+.floating-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 12px rgba(249, 166, 24, 0.7);
+}
+
+/* WhatsApp specific */
+.floating-btn.whatsapp {
+  color: #25D366;
+  border-color: #25D366;
+}
+
+/* Email specific */
+.floating-btn.email {
+  color: #F9A618;
+  border-color: #F9A618;
+}
