@@ -25,7 +25,7 @@ const OurProducts = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const categoryRes = await axios.get("http://localhost:5000/api/categories");
+        const categoryRes = await axios.get("https://acoustic-vision.onrender.com/api/categories");
         const categoryList = categoryRes.data.map((cat) => ({
           id: cat._id,
           name: cat.name,
@@ -33,7 +33,7 @@ const OurProducts = () => {
         }));
         setCategories(categoryList);
 
-        const productRes = await axios.get("http://localhost:5000/api/products");
+        const productRes = await axios.get("https://acoustic-vision.onrender.com/api/products");
         setProducts(productRes.data);
       } catch (err) {
         console.error("Error fetching data:", err);

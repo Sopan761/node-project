@@ -20,7 +20,7 @@ const AudiovisualHire = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/categories")
+      .get("https://acoustic-vision.onrender.com/api/categories")
       .then((res) => {
         if (Array.isArray(res.data)) {
           setCategories(res.data);

@@ -25,9 +25,9 @@ mongoose.connect(process.env.MONGO_URI, {
 .catch(err => console.error('❌ MongoDB connection error:', err));
 
 // ✅ Test route
-app.get('/', (req, res) => {
-  res.send('Backend is working!');
-});
+// app.get('/', (req, res) => {
+//   res.send('Backend is working!');
+// });
 
 // ✅ Routes
 app.use('/api/categories', require('./routes/categoryRoutes'));
