@@ -51,12 +51,14 @@ app.get('/create-default-admin', async (req, res) => {
   res.send('Default admin created');
 });
 
-// ✅ Serve React build in production
 if (process.env.NODE_ENV === "production") {
   const frontendPath = path.join(__dirname, "frontend/frontend1/build");
+  
+  // Serve static files
   app.use(express.static(frontendPath));
 
-  app.get("*", (req, res) => {
+  // For any route not matched by API, send index.html
+  app.get(/^\/(?!api).*/, (req, res) => {
     res.sendFile(path.join(frontendPath, "index.html"));
   });
 }
