@@ -17,7 +17,7 @@ const Navbar = () => (
          About Us
       </NavLink></li>
         <li><NavLink to="/OurProducts" style={{ color: "inherit", textDecoration: "none" }}>
-        Service Catelog
+        Service Catalogue
       </NavLink>
       </li>
       <li className="dropdown">
