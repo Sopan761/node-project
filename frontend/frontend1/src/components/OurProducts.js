@@ -62,7 +62,7 @@ const OurProducts = () => {
         style={{ backgroundImage: `url(${ourProductsBanner})` }}
       >
         <div className="banner-overlay">
-          <h1>{selectedCategory ? "OUR SERVICES" : "SERVICE CATALOG"}</h1>
+          <h1>{selectedCategory ? "OUR SERVICES" : "SERVICE CATALOGUE"}</h1>
           <p>
             {selectedCategory
               ? `Explore all products under "${selectedCategory}"`
