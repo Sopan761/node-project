@@ -36,11 +36,11 @@ const Navbar = () => {
             About Us
           </NavLink>
         </li>
-        <li>
+        {/* <li>
           <NavLink to="/OurProducts" className="nav-link" onClick={handleLinkClick}>
             Service Catalogue
           </NavLink>
-        </li>
+        </li> */}
 
         {/* Dropdown */}
         <li
@@ -86,7 +86,11 @@ const Navbar = () => {
             </li>
           </ul>
         </li>
-
+        <li>
+          <NavLink to="/" className="nav-link" onClick={handleLinkClick}>
+            Events & Testimonials
+          </NavLink>
+        </li>
         <li>
           <NavLink to="/Contactus" className="nav-link" onClick={handleLinkClick}>
             Contact Us
