@@ -4,7 +4,7 @@ import axios from "axios";
 import "./OurProducts.css";
 import ProductCard from "../components/common/ProductCard";
 import ourProductsBanner from "../assets/ourproducts.jpg";
-
+import api from "../api";
 const OurProducts = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -25,7 +25,7 @@ const OurProducts = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const categoryRes = await axios.get("https://acoustic-vision.onrender.com/api/categories");
+        const categoryRes = await api.get("/api/categories");
         const categoryList = categoryRes.data.map((cat) => ({
           id: cat._id,
           name: cat.name,
@@ -33,7 +33,7 @@ const OurProducts = () => {
         }));
         setCategories(categoryList);
 
-        const productRes = await axios.get("https://acoustic-vision.onrender.com/api/products");
+        const productRes = await api.get("/api/products");
         setProducts(productRes.data);
       } catch (err) {
         console.error("Error fetching data:", err);

@@ -4,7 +4,7 @@ import emailjs from "emailjs-com"; // ✅ EmailJS import
 import "./ContactUs.css";
 import FooterMiddle from "./FooterMiddle";
 
-const API_BASE = "https://acoustic-vision.onrender.com/api";
+const API_BASE = (process.env.REACT_APP_API_URL || "https://acoustic-vision.onrender.com") + "/api";
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({

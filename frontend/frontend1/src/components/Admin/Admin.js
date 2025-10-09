@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Admin.css";
 
-const API_BASE = "https://acoustic-vision.onrender.com/api";
+const API_BASE = (process.env.REACT_APP_API_URL || "https://acoustic-vision.onrender.com") + "/api";
 
 const Admin = () => {
   const navigate = useNavigate();
