@@ -7,12 +7,37 @@ const path = require('path');   // ✅ import path
 
 const app = express();
 
-// ✅ CORS setup
-app.use(cors({
-  origin: process.env.CLIENT_URL || "http://localhost:3000", 
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
-}));
+// CORS - allow only trusted origins and handle preflight
+const allowedOrigins = [
+  process.env.CLIENT_URL,                     // e.g. https://acousticvisions.online (set in Render)
+  "https://acousticvisions.online",           // explicit fallback
+  "https://acoustic-vision.onrender.com",     // allow requests originating from backend domain if needed
+].filter(Boolean);
+
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  // If no origin (server-to-server, mobile apps, curl), allow it
+  if (!origin) {
+    return next();
+  }
+
+  // If origin is allowed, set CORS headers for this request
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization");
+    // If you use cookies / sessions cross-site, keep this true and ensure allowedOrigins is not '*'
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+  }
+
+  // Handle preflight
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(204);
+  }
+
+  next();
+});
+
 
 app.use(express.json());
 
