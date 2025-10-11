@@ -1,132 +1,133 @@
-.aboutus-container {
-  background-color: #000;
+:root{
+  --bg: #000;
+  --muted: #cfcfcf;
+  --accent: #f9a618;
+  --container-max: 1200px;
+  --gap: 28px;
+  --radius: 10px;
+  --pad: 40px;
+  --font-sans: 'Neutraface', 'Segoe UI', system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+.aboutus-page {
+  background: var(--bg);
   color: #fff;
-  font-family: 'Neutraface', 'Segoe UI', sans-serif;
-  padding: 60px 40px;
-  line-height: 1.6;
+  font-family: var(--font-sans);
+  padding: 28px 18px;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
 }
 
+.aboutus-container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: clamp(20px, 3vw, 60px);
+}
+
+/* Fluid type */
+h1 { font-size: clamp(1.6rem, 2.6vw, 2.6rem); margin: 0 0 10px; color: var(--accent); }
+h2 { font-size: clamp(1.25rem, 1.8vw, 1.75rem); margin: 0 0 14px; color: var(--accent); }
+p { color: #ccc; line-height: 1.6; margin: 0 0 12px; font-size: clamp(0.95rem, 1.2vw, 1rem); }
+.lead { font-size: clamp(1rem, 1.6vw, 1.15rem); color: var(--muted); }
+
+/* Top section uses grid to adapt smoothly */
 .aboutus-top {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--gap);
   align-items: center;
-  gap: 30px;
-  margin-bottom: 60px;
+  margin-bottom: 36px;
 }
 
-.aboutus-text {
-  flex: 1;
-  min-width: 280px;
+/* Wraps for consistent aspect-ratio control */
+.aboutus-image-wrap,
+.founder-image-wrap {
+  width: 100%;
+  /* modern browsers: use aspect-ratio for nice cropping */
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--radius);
+  box-shadow: 0 8px 30px rgba(249,166,24,0.12);
+  background: linear-gradient(180deg, rgba(0,0,0,0.2), rgba(0,0,0,0.4));
 }
 
-.aboutus-text h1 {
-  font-size: 42px;
-  color: #f9a618;
-  margin-bottom: 10px;
-}
-
-.aboutus-text p {
-  color: #ccc;
-  font-size: 18px;
-}
-
-.aboutus-image {
-  flex: 1;
-  max-width: 420px;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(249, 166, 24, 0.2);
-}
-
-.aboutus-section {
-  margin-bottom: 50px;
-}
-
-.aboutus-section h2 {
-  font-size: 28px;
-  color: #f9a618;
-  margin-bottom: 15px;
-}
-
-.aboutus-section p {
-  color: #ccc;
-  font-size: 16px;
-  margin-bottom: 16px;
-}
-
-/* Founder section layout */
-.aboutus-founder {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  gap: 30px;
-  margin-bottom: 50px;
-}
-
-.founder-text {
-  flex: 2;
-  min-width: 280px;
-}
-
+.aboutus-image,
 .founder-image {
-  flex: 1;
-  max-width: 300px;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(249, 166, 24, 0.15);
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* prevents weird stretching and preserves center crop */
+  object-position: center;
 }
 
+/* About text column */
+.aboutus-text {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 4px 8px;
+}
+
+/* Contact button */
+.aboutus-contact-btn {
+  display: inline-block;
+  background-color: var(--accent);
+  color: #000;
+  padding: 10px 22px;
+  text-decoration: none;
+  border-radius: 999px;
+  font-weight: 600;
+  align-self: start;
+  transition: transform .12s ease, box-shadow .12s ease;
+  margin-top: 8px;
+}
+.aboutus-contact-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.25); }
+
+/* Simple spacing for sections */
+.aboutus-section { margin-bottom: 30px; }
+
+/* Founder section: grid that flips when narrow */
+.aboutus-founder {
+  display: grid;
+  grid-template-columns: 1fr 340px; /* text + image */
+  gap: var(--gap);
+  align-items: start;
+  margin-bottom: 36px;
+}
+
+/* Ensure the founder image doesn't get too large on wide screens */
+.founder-image-wrap { max-width: 340px; margin: 0; justify-self: center; }
+
+/* small adjustments to the founder text */
+.founder-text { min-width: 0; }
+
+/* Footer */
 .aboutus-footer {
   text-align: center;
-  margin-top: 60px;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.04);
 }
+.aboutus-footer h3 { margin-bottom: 8px; color: var(--accent); }
 
-.aboutus-footer h3 {
-  font-size: 24px;
-  color: #f9a618;
-  margin-bottom: 10px;
-}
-
-.aboutus-footer p {
-  color: #ccc;
-  margin-bottom: 20px;
-}
-
-.aboutus-contact-btn {
-  background-color: #f9a618;
-  color: black;
-  padding: 12px 28px;
-  text-decoration: none;
-  border-radius: 20px;
-  font-weight: 600;
-  transition: background 0.3s ease;
-}
-
-.aboutus-contact-btn:hover {
-  background-color: #d88f11;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .aboutus-top {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .aboutus-image {
-    width: 100%;
-    max-width: 100%;
-  }
-
+/* --- Responsive tweaks for small screens --- */
+@media (max-width: 880px) {
   .aboutus-founder {
-    flex-direction: column;
-    align-items: center;
+    grid-template-columns: 1fr; /* stack */
     text-align: center;
   }
+  .founder-image-wrap { max-width: 320px; width: 70%; margin: 0 auto; }
+  .aboutus-contact-btn { align-self: center; }
+  .aboutus-image-wrap { aspect-ratio: 16 / 9; } /* slightly wider hero image on small screens */
+}
 
-  .founder-image {
-    width: 100%;
-    max-width: 320px;
-  }
+/* even smaller phones */
+@media (max-width: 420px) {
+  :root { --gap: 18px; }
+  .aboutus-container { padding: 18px; }
+  .founder-image-wrap { width: 100%; aspect-ratio: 4/5; }
+  .aboutus-image-wrap { aspect-ratio: 4/3; }
+  .aboutus-text { padding: 0; }
 }
